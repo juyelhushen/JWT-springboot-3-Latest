@@ -1,8 +1,10 @@
 package com.springsecuritylatest.config;
 
 import com.springsecuritylatest.dao.UserDoa;
+import com.springsecuritylatest.jwt.AuthEntryPoint;
 import com.springsecuritylatest.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -37,6 +39,9 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final UserDoa userDoa;
 
+    @Autowired
+    private final AuthEntryPoint unAuthHandler;
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -60,7 +65,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unAuthHandler)
+                .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/**")
                 .permitAll()
