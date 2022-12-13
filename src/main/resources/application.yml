@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/kering
+    url: jdbc:mysql://localhost:3306/******
     username: root
-    password: 8899
+    password: ****
 
   jpa:
     hibernate:
